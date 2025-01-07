@@ -14,6 +14,9 @@ spec:
       labels:
         app: repo-puller
     spec:
+      volumes:
+        - name: repo-content
+          emptyDir: {}
       containers:
         - name: repo-puller
           image: ghcr.io/chewbaccalakis/repo-puller:latest
@@ -26,4 +29,7 @@ spec:
               value: 60
             - name: BRANCH
               value: main
+          volumeMounts:
+            - name: repo-content
+              mountPath: /repo
       restartPolicy: Always
