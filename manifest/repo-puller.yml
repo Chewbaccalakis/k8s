@@ -20,6 +20,8 @@ spec:
       containers:
         - name: repo-puller
           image: ghcr.io/chewbaccalakis/repo-puller:latest
+          command: ["/usr/local/bin/python"]
+          args: ["repo-puller.py"]
           env:
             - name: REPO_URL
               value: "https://github.com/Chewbaccalakis/repo-puller"
