@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: repo-puller
+  name: repo-puller-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: repo-puller
+  template:
+    metadata:
+      labels:
+        app: repo-puller
+    spec:
+      containers:
+        - name: repo-puller
+          image: ghcr.io/chewbaccalakis/repo-puller:latest
+          env:
+            - name: REPO_URL
+              value: https://github.com/Chewbaccalakis/repo-puller
+            - name: LOCAL_PATH
+              value: /repo
+            - name: CHECK_INTERVAL
+              value: 60
+            - name: BRANCH
+              value: main
+      restartPolicy: Always
