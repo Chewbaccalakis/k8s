@@ -22,13 +22,13 @@ spec:
           image: ghcr.io/chewbaccalakis/repo-puller:latest
           env:
             - name: REPO_URL
-              value: https://github.com/Chewbaccalakis/repo-puller
+              value: "https://github.com/Chewbaccalakis/repo-puller"
             - name: LOCAL_PATH
-              value: /repo
+              value: "/repo"
             - name: CHECK_INTERVAL
-              value: 60
+              value: "60"
             - name: BRANCH
-              value: main
+              value: "main"
           volumeMounts:
             - name: repo-content
               mountPath: /repo
