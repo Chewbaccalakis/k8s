@@ -45,9 +45,3 @@ spec:
               mountPath: /etc/caddy/
               subPath: current
               readOnly: true # no need to ever write to the volume
-      dnsPolicy: None
-      dnsConfig:
-        nameservers:
-          - 1.1.1.1
-          - 1.0.0.1
-        searches: []
