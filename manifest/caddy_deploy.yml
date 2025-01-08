@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caddy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: caddy
+  template:
+    metadata:
+      labels:
+        app: caddy
+    spec:
+      securityContext:
+        fsGroup: 101
+      volumes:
+        - name: content-from-git
+          emptyDir: {}
+      initContainers:
+        - name: git-sync
+          image: registry.k8s.io/git-sync/git-sync:v4.0.0
+          args:
+            - --repo=https://github.com/Chewbaccalakis/k8s-caddyfiles
+            - --depth=1
+            - --one-time
+            - --link=current
+            - --root=/git
+            - --username=chewbaccalakis
+            - --password=$(GITHUB_PAT)
+          env:
+            - name: GITHUB_PAT
+              valueFrom:
+                secretKeyRef:
+                  name: github-pat-secret
+                  key: GITHUB_PAT
+          volumeMounts:
+            - name: content-from-git
+              mountPath: /git
+      containers:
+        - name: caddy
+          volumeMounts:
+            - name: content-from-git
+              mountPath: /etc/caddy/
+              subPath: current
+              readOnly: true # no need to ever write to the volume
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+          - 1.0.0.1
+        searches: []
