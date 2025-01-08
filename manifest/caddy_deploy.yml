@@ -39,6 +39,7 @@ spec:
               mountPath: /git
       containers:
         - name: caddy
+          image: caddy
           volumeMounts:
             - name: content-from-git
               mountPath: /etc/caddy/
